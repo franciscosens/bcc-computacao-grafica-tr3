@@ -102,3 +102,6 @@ Atenção: usar matriz de transformação global para acumular transformações 
 - 7 sempre inicia o poligno com primitiva line_loop
 	- clicar P tecla ai troca para line_strap
 - 8 troca a cor do poligno selecionado
+
+# Diagrama
+![Diagrama](assets/Diagrama.png)

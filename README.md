@@ -1,4 +1,4 @@
-# Computação Gráfica - Trabalho 02
+# Computação Gráfica - Trabalho 03
 
 Alunos: 
 

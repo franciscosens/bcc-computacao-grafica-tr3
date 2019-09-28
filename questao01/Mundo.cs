@@ -39,9 +39,7 @@ namespace questao01
             base.OnUpdateFrame(e);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            //GL.Ortho(camera.xmin, camera.xmax, camera.ymin, camera.ymax, camera.zmin, camera.zmax);
-            GL.Ortho(-300, 300, -300, 300, -1, 1);
-
+            GL.Ortho(camera.xmin, camera.xmax, camera.ymin, camera.ymax, camera.zmin, camera.zmax);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

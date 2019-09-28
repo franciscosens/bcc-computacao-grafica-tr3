@@ -11,8 +11,16 @@ namespace questao01
 
     public class Mundo : GameWindow
     {
+        #region Declaracoes
         public static Mundo instance = null;
+        public ObjetoAramado poligonoAtual = null;
 
+        private Camera camera = new Camera();
+        protected List<Objeto> objetosLista = new List<Objeto>();
+        private bool moverPto = false;
+        #endregion
+
+        #region ConstrutorSingleton
         public Mundo(int width, int height) : base(width, height) { }
 
         public static Mundo getInstance()
@@ -21,11 +29,9 @@ namespace questao01
                 instance = new Mundo(600, 600);
             return instance;
         }
+        #endregion
 
-        private Camera camera = new Camera();
-        protected List<Objeto> objetosLista = new List<Objeto>();
-        private bool moverPto = false;
-
+        #region Frame
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -56,60 +62,61 @@ namespace questao01
 
             this.SwapBuffers();
         }
+        #endregion
 
-        private void GerarLinhas()
-        {
-            GL.LineWidth(5);
-            GL.Begin(PrimitiveType.Lines);
-            GL.Color3(Color.Red);
-            GL.Vertex2(0, 0); GL.Vertex2(200, 0);
-            GL.Color3(Color.Green);
-            GL.Vertex2(0, 0); GL.Vertex2(0, 200);
-            GL.End();
-        }
+        #region Input
         protected override void OnKeyDown(OpenTK.Input.KeyboardKeyEventArgs e)
         {
-            if (e.Key == Key.Escape)
-                Exit();
-            else
-            if (e.Key == Key.E)
+            switch (e.Key)
             {
-                for (var i = 0; i < objetosLista.Count; i++)
-                {
-                    objetosLista[i].PontosExibirObjeto();
-                }
-            }
-            else
-            if (e.Key == Key.M)
-            {
-                moverPto = !moverPto;
+                case Key.Escape:
+                    Exit();
+                    break;
+                case Key.E:
+                    for (var i = 0; i < objetosLista.Count; i++)
+                        objetosLista[i].PontosExibirObjeto();
+                    break;
+                case Key.Space:
+                    poligonoAtual = null;
+                    break;
+                case Key.M:
+                    moverPto = !moverPto;
+                    break;
             }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
-
-            ObjetoAramado objetoAnterior = (ObjetoAramado)objetosLista[objetosLista.Count - 1];
-            Ponto4D pontoAnterior = objetoAnterior.ObterUltimoPonto();
-            objetoAnterior.PontosAdicionar(pontoAnterior);
-            objetoAnterior.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
-            objetoAnterior.Desenhar();
-        }
-        protected override void OnMouseMove(MouseMoveEventArgs e)
-        {
-            if (moverPto)
+            if (e.Button == MouseButton.Right)
             {
-                if (objetosLista.Count == 0)
+
+            }
+            else if (e.Button == MouseButton.Left)
+            {
+                if (poligonoAtual == null)
                 {
-                    ObjetoAramado objeto = new ObjetoAramado("A");
-                    objeto.DefinirPrimitiva(PrimitiveType.Lines);
-                    objeto.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
-                    objeto.PontosAdicionar(new Ponto4D(e.Position.X + 1, 599 - e.Position.Y, 0));
-                    objetosLista.Add(objeto);
-                    objeto.Desenhar();
+                    poligonoAtual = new ObjetoAramado("A");
+                    poligonoAtual.DefinirPrimitiva(PrimitiveType.Lines);
+                    poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+                    poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X + 1, 599 - e.Position.Y, 0));
+                    objetosLista.Add(poligonoAtual);
+                    poligonoAtual.Desenhar();
                 }
-                //retanguloB.MoverPtoSupDir(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+                else
+                {
+                    Ponto4D pontoAnterior = poligonoAtual.ObterUltimoPonto();
+                    poligonoAtual.PontosAdicionar(pontoAnterior);
+                    poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+                    poligonoAtual.Desenhar();
+                }
             }
         }
+
+        protected override void OnMouseMove(MouseMoveEventArgs e)
+        {
+            //retanguloB.MoverPtoSupDir(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+        }
+        #endregion
+
     }
 }

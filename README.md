@@ -6,7 +6,7 @@ Alunos:
 - [Francisco Lucas Sens](https://github.com/franciscosens)
 - [Luciane Tedesco](https://github.com/lucianetedesco)
 
-[Slides](assets/slides.pdf)
+[Slides](assets/cg-slides_u3.pdf)
 
 # 1 - O que deve ser feito
 O cenário consiste em implementar um Editor Vetorial 2D para "adicionar" e "manipular" polígonos abertos/fechados e convexos/côncavos utilizando somente o teclado e mouse.

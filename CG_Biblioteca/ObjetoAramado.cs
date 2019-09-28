@@ -23,7 +23,7 @@ namespace CG_Biblioteca
             GL.End();
         }
 
-        protected void PontosAdicionar(Ponto4D pto)
+        public void PontosAdicionar(Ponto4D pto)
         {
             pontosLista.Add(pto);
         }
@@ -40,6 +40,13 @@ namespace CG_Biblioteca
             {
                 Console.WriteLine("P" + i + "[" + pontosLista[i].X + "," + pontosLista[i].Y + "," + pontosLista[i].Z + "," + pontosLista[i].W + "]");
             }
+        }
+
+        public Ponto4D ObterUltimoPonto() => pontosLista[pontosLista.Count - 1];
+
+        public void DefinirPrimitiva(PrimitiveType primitiveType)
+        {
+            base.PrimitivaTipo = primitiveType;
         }
     }
 }

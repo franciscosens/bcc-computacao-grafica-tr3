@@ -86,10 +86,28 @@ namespace questao01
             }
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+
+            ObjetoAramado objetoAnterior = (ObjetoAramado)objetosLista[objetosLista.Count - 1];
+            Ponto4D pontoAnterior = objetoAnterior.ObterUltimoPonto();
+            objetoAnterior.PontosAdicionar(pontoAnterior);
+            objetoAnterior.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+            objetoAnterior.Desenhar();
+        }
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             if (moverPto)
             {
+                if (objetosLista.Count == 0)
+                {
+                    ObjetoAramado objeto = new ObjetoAramado("A");
+                    objeto.DefinirPrimitiva(PrimitiveType.Lines);
+                    objeto.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+                    objeto.PontosAdicionar(new Ponto4D(e.Position.X + 1, 599 - e.Position.Y, 0));
+                    objetosLista.Add(objeto);
+                    objeto.Desenhar();
+                }
                 //retanguloB.MoverPtoSupDir(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
             }
         }

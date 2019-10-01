@@ -18,6 +18,7 @@ namespace questao01
         private Camera camera = new Camera();
         protected List<Objeto> objetosLista = new List<Objeto>();
         private bool moverPto = false;
+        private Ponto4D pontoSelecionado = null;
         #endregion
 
         #region ConstrutorSingleton
@@ -76,12 +77,33 @@ namespace questao01
                     for (var i = 0; i < objetosLista.Count; i++)
                         objetosLista[i].PontosExibirObjeto();
                     break;
-                case Key.Space:
-                    poligonoAtual = null;
-                    break;
                 case Key.M:
                     moverPto = !moverPto;
                     break;
+                case Key.Space:
+                    poligonoAtual = null;
+                    break;
+                #region questao03:
+                case Key.V:
+                    RemoverPontoSelecionado();
+                    break;
+                #endregion
+                #region questao04:
+                case Key.D:
+                    ApagarPontoAtual();
+                    break;
+                #endregion
+                #region questao08:
+                case Key.B:
+                    poligonoAtual.Cor = Color.Blue;
+                    break;
+                case Key.G:
+                    poligonoAtual.Cor = Color.Green;
+                    break;
+                case Key.R:
+                    poligonoAtual.Cor = Color.Red;
+                    break;
+                #endregion
             }
         }
 
@@ -89,28 +111,14 @@ namespace questao01
         {
             if (e.Button == MouseButton.Right)
             {
-
+                MoverPonto();
             }
             else if (e.Button == MouseButton.Left)
             {
-                if (poligonoAtual == null)
-                {
-                    poligonoAtual = new ObjetoAramado("A");
-                    poligonoAtual.DefinirPrimitiva(PrimitiveType.Lines);
-                    poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
-                    poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X + 1, 599 - e.Position.Y, 0));
-                    objetosLista.Add(poligonoAtual);
-                    poligonoAtual.Desenhar();
-                }
-                else
-                {
-                    Ponto4D pontoAnterior = poligonoAtual.ObterUltimoPonto();
-                    poligonoAtual.PontosAdicionar(pontoAnterior);
-                    poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
-                    poligonoAtual.Desenhar();
-                }
+                AdicionarPoligono(e);
             }
         }
+
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
@@ -118,5 +126,50 @@ namespace questao01
         }
         #endregion
 
+        private void RemoverPontoSelecionado()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ApagarPontoAtual()
+        {
+            if (poligonoAtual != null)
+            {
+                if (poligonoAtual.QuantidadePontos() > 4)
+                {
+                    poligonoAtual.RemoverUltimoPonto();
+                }
+                else if (poligonoAtual.QuantidadePontos() == 4)
+                {
+                    poligonoAtual.RemoverUltimoPonto();
+                    poligonoAtual.RemoverUltimoPonto();
+                    objetosLista.Remove(poligonoAtual);
+                    poligonoAtual = null;
+                }
+            }
+        }
+
+        private void MoverPonto()
+        {
+            //pontoSelecionado = poligonoAtual.
+        }
+
+        private void AdicionarPoligono(MouseButtonEventArgs e)
+        {
+            if (poligonoAtual == null)
+            {
+                poligonoAtual = new ObjetoAramado("A");
+                poligonoAtual.DefinirPrimitiva(PrimitiveType.Lines);
+                poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+                poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X + 1, 599 - e.Position.Y, 0));
+                objetosLista.Add(poligonoAtual);
+            }
+            else
+            {
+                Ponto4D pontoAnterior = poligonoAtual.ObterUltimoPonto();
+                poligonoAtual.PontosAdicionar(pontoAnterior);
+                poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+            }
+        }
     }
 }

@@ -8,13 +8,17 @@ namespace CG_Biblioteca
     public class ObjetoAramado : Objeto
     {
         protected List<Ponto4D> pontosLista = new List<Ponto4D>();
+        public Color Cor { get; set; }
 
-        public ObjetoAramado(string rotulo) : base(rotulo) { }
+        public ObjetoAramado(string rotulo) : base(rotulo)
+        {
+            Cor = Color.White;
+        }
 
         protected override void DesenharAramado()
         {
             GL.LineWidth(base.PrimitivaTamanho);
-            GL.Color3(Color.White);
+            GL.Color3(Cor);
             GL.Begin(base.PrimitivaTipo);
             foreach (Ponto4D pto in pontosLista)
             {
@@ -43,6 +47,13 @@ namespace CG_Biblioteca
         }
 
         public Ponto4D ObterUltimoPonto() => pontosLista[pontosLista.Count - 1];
+        public void RemoverUltimoPonto()
+        {
+            pontosLista.RemoveAt(pontosLista.Count - 1);
+            pontosLista.RemoveAt(pontosLista.Count - 1);
+        }
+
+        public int QuantidadePontos() => pontosLista.Count;
 
         public void DefinirPrimitiva(PrimitiveType primitiveType)
         {

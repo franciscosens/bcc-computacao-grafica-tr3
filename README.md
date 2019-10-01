@@ -86,16 +86,17 @@ Considere a transformação global ao transformar (translação/escala/rotação
 Atenção: usar matriz de transformação global para acumular transformações de acordo com o grafo de cena.
 
 # Obs: 
-- Quando clicar com o botão esquerdo, criar um Ponto4D na tela
-- Quando clicar na tecla D, remover o ponto que está na variavel 'polignoAtual' que ficará localizada no Mundo.
-- O último ponto adicionado ficará armazenado no polignoAtual, caso o ponto é removido, adcionar null na variavel.
-- Ao clicar na barra de espaço, deverá parar o poligno.
-- Quando criar um ponto, criar outro igual.
+
+- [x] Quando clicar com o botão esquerdo, criar um Ponto4D na tela
+- [x] Quando clicar na tecla D, remover o ponto que está na variavel 'polignoAtual' que ficará localizada no Mundo.
+- [x] O último ponto adicionado ficará armazenado no polignoAtual, caso o ponto é removido, adcionar null na variavel.
+- [x] Ao clicar na barra de espaço, deverá parar o poligno.
+- [x] Quando criar um ponto, criar outro igual.
 - Quando o usuário mecher o mouse, mover o segundo ponto.
 - Clicar na tecla P, altera a primitva Line_loop para line_tr
 - 4 clica na tela com mouse esquerdo -> inserir vertice (Ponto4D)
-    - Finalizar - espaço
-    - remover tecla D -> polignoAtual (propriedade), quando remover fica nulo
+    - [x] Finalizar - espaço
+    - [x]remover tecla D -> polignoAtual (propriedade), quando remover fica nulo
 - 5 clica na tela com mouse direito -> seleciona o vertice mais próximo e move
 	- clica na tecla v -> remover
 - 6 fazer o rastro -> sempre inserir dois ptos na matriz

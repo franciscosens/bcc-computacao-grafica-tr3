@@ -135,13 +135,12 @@ namespace questao01
         {
             if (poligonoAtual != null)
             {
-                if (poligonoAtual.QuantidadePontos() > 4)
+                if (poligonoAtual.QuantidadePontos() > 2)
                 {
                     poligonoAtual.RemoverUltimoPonto();
                 }
-                else if (poligonoAtual.QuantidadePontos() == 4)
+                else if (poligonoAtual.QuantidadePontos() == 2)
                 {
-                    poligonoAtual.RemoverUltimoPonto();
                     poligonoAtual.RemoverUltimoPonto();
                     objetosLista.Remove(poligonoAtual);
                     poligonoAtual = null;
@@ -159,15 +158,12 @@ namespace questao01
             if (poligonoAtual == null)
             {
                 poligonoAtual = new ObjetoAramado("A");
-                poligonoAtual.DefinirPrimitiva(PrimitiveType.Lines);
+                poligonoAtual.DefinirPrimitiva(PrimitiveType.LineLoop);
                 poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
-                poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X + 1, 599 - e.Position.Y, 0));
                 objetosLista.Add(poligonoAtual);
             }
             else
-            {
-                Ponto4D pontoAnterior = poligonoAtual.ObterUltimoPonto();
-                poligonoAtual.PontosAdicionar(pontoAnterior);
+            { 
                 poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
             }
         }

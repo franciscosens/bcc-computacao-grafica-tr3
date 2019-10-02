@@ -50,7 +50,6 @@ namespace CG_Biblioteca
         public void RemoverUltimoPonto()
         {
             pontosLista.RemoveAt(pontosLista.Count - 1);
-            pontosLista.RemoveAt(pontosLista.Count - 1);
         }
 
         public int QuantidadePontos() => pontosLista.Count;

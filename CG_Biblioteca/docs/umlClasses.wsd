@@ -25,6 +25,8 @@ BBox : + double obterMaiorY => maiorY
 BBox : + double obterMaiorZ => maiorZ
 BBox : + Ponto4D obterCentro => centro
 BBox o-- Ponto4D
+/' Privado_BBox '/
+BBox : + bool Dentro(BBox bBox,Ponto4D pto)
 
 Camera : - double xMin
 Camera : - double xMax
@@ -48,6 +50,9 @@ Camera : + void ZoomOut()
 
 Matematica : + {static} Ponto4D GerarPtosCirculo(double angulo, double raio)
 Matematica : + {static} double GerarPtosCirculoloSimétrico(double raio)
+/' Privado_Matematica '/ 
+Matematica : + {static} double DistanciaEuclidiana(Ponto4D pto1, Ponto4D pto2)
+Matematica : + {static} double DistanciaEuclidianaSemRaiz(Ponto4D pto1, Ponto4D pto2)
 
 Ponto4D : - double x
 Ponto4D : - double y

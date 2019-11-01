@@ -107,6 +107,16 @@ namespace gcgcg
         objetoSelecionado.RotacaoZBBox(10);         // N3-Exe12: rotação
       else if (e.Key == Key.Number4)
         objetoSelecionado.RotacaoZBBox(-10);        // N3-Exe12: rotação
+      else if (e.Key == Key.T)
+        objetoSelecionado.PontosRemoverTodos();
+      else if (e.Key == Key.U)
+      objetoSelecionado.PontosRemoverUltimo();
+      //else if (e.Key == Key.R)
+        //objetoSelecionado.Cor = Color.Red;
+      //else if (e.Key == Key.G)
+        //objetoSelecionado.Cor = Color.Green;
+      //else if (e.Key == Key.B)
+        //objetoSelecionado.Cor = Color.Blue;
       else if (e.Key == Key.Enter)
       {
         objetoSelecionado = objetoNovo;

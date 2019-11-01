@@ -40,7 +40,7 @@ namespace gcgcg
       pontosLista.RemoveAt(pontosLista.Count - 1);
     }
 
-    protected void PontosRemoverTodos()
+    public void PontosRemoverTodos()
     {
       pontosLista.Clear();
     }
@@ -57,6 +57,11 @@ namespace gcgcg
       {
         Console.WriteLine("P" + i + "[" + pontosLista[i].X + "," + pontosLista[i].Y + "," + pontosLista[i].Z + "," + pontosLista[i].W + "]");
       }
+    }
+
+    public void PontoProximo(int mouseX, int mouseY)
+    {
+
     }
   }
 }

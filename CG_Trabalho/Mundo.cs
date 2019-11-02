@@ -111,12 +111,12 @@ namespace gcgcg
         objetoSelecionado.PontosRemoverTodos();
       else if (e.Key == Key.U)
       objetoSelecionado.PontosRemoverUltimo();
-      //else if (e.Key == Key.R)
-        //objetoSelecionado.Cor = Color.Red;
-      //else if (e.Key == Key.G)
-        //objetoSelecionado.Cor = Color.Green;
-      //else if (e.Key == Key.B)
-        //objetoSelecionado.Cor = Color.Blue;
+      else if (e.Key == Key.R)
+        objetoSelecionado.Cor = Color.Red;
+      else if (e.Key == Key.G)
+        objetoSelecionado.Cor = Color.Green;
+      else if (e.Key == Key.B)
+        objetoSelecionado.Cor = Color.Blue;
       else if (e.Key == Key.Enter)
       {
         objetoSelecionado = objetoNovo;

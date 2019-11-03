@@ -113,6 +113,18 @@ namespace gcgcg
       objetoSelecionado.PontosRemoverUltimo();
       else if (e.Key == Key.R)
         objetoSelecionado.Cor = Color.Red;
+      else if (e.Key == Key.S)
+      {
+        foreach (ObjetoAramado objeto in objetosLista)
+        {
+            bool isInside = objeto.IsPointInPolygon(new Ponto4D(mouseX, mouseY));
+
+            if (isInside) {
+              objetoSelecionado = objeto;
+              break;
+            }
+        }
+      }
       else if (e.Key == Key.G)
         objetoSelecionado.Cor = Color.Green;
       else if (e.Key == Key.B)

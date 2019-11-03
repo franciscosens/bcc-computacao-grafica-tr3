@@ -66,5 +66,44 @@ namespace gcgcg
     {
 
     }
+
+
+    public bool IsPointInPolygon( Ponto4D p )
+    {
+        double minX = pontosLista[ 0 ].X;
+        double maxX = pontosLista[ 0 ].X;
+        double minY = pontosLista[ 0 ].Y;
+        double maxY = pontosLista[ 0 ].Y;
+        for ( int i = 1 ; i < pontosLista.Count ; i++ )
+        {
+            Ponto4D q = pontosLista[ i ];
+            minX = Math.Min( q.X, minX );
+            maxX = Math.Max( q.X, maxX );
+            minY = Math.Min( q.Y, minY );
+            maxY = Math.Max( q.Y, maxY );
+        }
+
+        if ( p.X < minX || p.X > maxX || p.Y < minY || p.Y > maxY )
+        {
+            return false;
+        }
+
+        // Ray-casting
+        bool inside = false;
+        for ( int i = 0, j = pontosLista.Count - 1 ; i < pontosLista.Count ; j = i++ )
+        {
+            if ( ( pontosLista[ i ].Y > p.Y ) != ( pontosLista[ j ].Y > p.Y ) 
+                && p.X < ( pontosLista[ j ].X - pontosLista[ i ].X ) 
+                    * ( p.Y - pontosLista[ i ].Y ) 
+                    / ( pontosLista[ j ].Y - pontosLista[ i ].Y ) 
+                    + pontosLista[ i ].X )
+            {
+                inside = !inside;
+            }
+        }
+
+        return inside;
+    }
+
   }
 }

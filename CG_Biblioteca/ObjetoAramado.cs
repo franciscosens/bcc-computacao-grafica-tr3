@@ -58,5 +58,12 @@ namespace CG_Biblioteca
         {
             base.PrimitivaTipo = primitiveType;
         }
+
+        public List<Ponto4D> ObterPontos() => pontosLista;
+
+        public void RemoverPonto(Ponto4D pontoSelecionado)
+        {
+            pontosLista.Remove(pontoSelecionado);
+        }
     }
 }

@@ -19,10 +19,15 @@ namespace questao01
         protected List<Objeto> objetosLista = new List<Objeto>();
         private bool moverPto = false;
         private Ponto4D pontoSelecionado = null;
+        private ObjetoAramado poligonoSelecionado;
+        private PrimitiveType tipoPrimitiva = PrimitiveType.LineLoop;
         #endregion
 
         #region ConstrutorSingleton
-        public Mundo(int width, int height) : base(width, height) { }
+        public Mundo(int width, int height) : base(width, height)
+        {
+
+        }
 
         public static Mundo getInstance()
         {
@@ -83,16 +88,23 @@ namespace questao01
                 case Key.Space:
                     poligonoAtual = null;
                     break;
-                #region questao03:
-                case Key.V:
-                    RemoverPontoSelecionado();
-                    break;
-                #endregion
                 #region questao04:
                 case Key.D:
                     ApagarPontoAtual();
                     break;
                 #endregion
+                #region questao05:
+                case Key.V:
+                    RemoverPontoSelecionado();
+                    break;
+                #endregion
+                #region questao07:
+                case Key.P:
+                    tipoPrimitiva = PrimitiveType.LineStrip;
+                    break;
+                #endregion
+
+
                 #region questao08:
                 case Key.B:
                     poligonoAtual.Cor = Color.Blue;
@@ -103,19 +115,21 @@ namespace questao01
                 case Key.R:
                     poligonoAtual.Cor = Color.Red;
                     break;
-                #endregion
+                    #endregion
             }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
+            Ponto4D pontoNovo = new Ponto4D(e.Position.X, 600 - e.Position.Y, 0);
+
             if (e.Button == MouseButton.Right)
             {
-                MoverPonto();
+                MoverPonto(pontoNovo);
             }
             else if (e.Button == MouseButton.Left)
             {
-                AdicionarPoligono(e);
+                AdicionarPoligono(pontoNovo);
             }
         }
 
@@ -128,7 +142,10 @@ namespace questao01
 
         private void RemoverPontoSelecionado()
         {
-            throw new NotImplementedException();
+            if (poligonoSelecionado != null && pontoSelecionado != null)
+            {
+                poligonoSelecionado.RemoverPonto(pontoSelecionado);
+            }
         }
 
         private void ApagarPontoAtual()
@@ -148,23 +165,53 @@ namespace questao01
             }
         }
 
-        private void MoverPonto()
+        private void MoverPonto(Ponto4D pontoNovo)
         {
-            //pontoSelecionado = poligonoAtual.
+            double maiorDistancia = double.MaxValue;
+            foreach (var objeto in objetosLista)
+            {
+                var poligono = (ObjetoAramado)objeto;
+                foreach (var pontoAtual in poligono.ObterPontos())
+                {
+                    double distancia = CalcularDistancia(pontoAtual, pontoNovo);
+                    if (distancia < maiorDistancia)
+                    {
+                        maiorDistancia = distancia;
+                        pontoSelecionado = pontoAtual;
+                        poligonoSelecionado = poligono ;
+                    }
+                }
+            }
         }
 
-        private void AdicionarPoligono(MouseButtonEventArgs e)
+        private double CalcularDistancia(Ponto4D pontoAtual, Ponto4D pontoNovo)
         {
-            if (poligonoAtual == null)
+            double a = (pontoNovo.X - pontoAtual.X);
+            double b = (pontoNovo.Y - pontoAtual.Y);
+            double disctancia = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            return disctancia;
+        }
+
+        private void AdicionarPoligono(Ponto4D pontoNovo)
+        {
+            if (pontoSelecionado != null)
+            {
+                pontoSelecionado.X = pontoNovo.X;
+                pontoSelecionado.Y = pontoNovo.Y;
+                pontoSelecionado = null;
+                poligonoSelecionado = null;
+            }
+            else if (poligonoAtual == null)
             {
                 poligonoAtual = new ObjetoAramado("A");
-                poligonoAtual.DefinirPrimitiva(PrimitiveType.LineLoop);
-                poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+                poligonoAtual.DefinirPrimitiva(tipoPrimitiva);
+                poligonoAtual.PontosAdicionar(pontoNovo);
                 objetosLista.Add(poligonoAtual);
             }
             else
-            { 
-                poligonoAtual.PontosAdicionar(new Ponto4D(e.Position.X, 600 - e.Position.Y, 0));
+            {
+                poligonoAtual.DefinirPrimitiva(tipoPrimitiva);
+                poligonoAtual.PontosAdicionar(pontoNovo);
             }
         }
     }

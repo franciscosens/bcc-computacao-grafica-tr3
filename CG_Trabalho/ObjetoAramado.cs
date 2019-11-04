@@ -11,13 +11,14 @@ namespace gcgcg
   {
     protected List<Ponto4D> pontosLista = new List<Ponto4D>();
 
-    public ObjetoAramado(string rotulo) : base(rotulo) { }
-
     public Color Cor { get; set; }
+    public ObjetoAramado(string rotulo) : base(rotulo) 
+    { 
+      Cor = Color.White;
+    }
 
     protected override void DesenharAramado()
     {
-      GL.Color3(Color.White);
       GL.LineWidth(base.PrimitivaTamanho);
       GL.Color3(Cor);
       GL.Begin(base.PrimitivaTipo);
@@ -62,6 +63,26 @@ namespace gcgcg
       }
     }
 
+    public Ponto4D ObterUltimoPonto() => pontosLista[pontosLista.Count - 1];
+
+    public void RemoverUltimoPonto()
+    {
+        pontosLista.RemoveAt(pontosLista.Count - 1);
+    }
+
+    public void DefinirPrimitiva(PrimitiveType primitiveType)
+    {
+        base.PrimitivaTipo = primitiveType;
+    }
+
+    public List<Ponto4D> ObterPontos() => pontosLista;
+
+    public int QuantidadePontos() => pontosLista.Count;
+    
+    public void RemoverPonto(Ponto4D pontoSelecionado)
+    {
+        pontosLista.Remove(pontoSelecionado);
+    }
     public void PontoProximo(int mouseX, int mouseY)
     {
 

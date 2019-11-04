@@ -28,6 +28,9 @@ namespace gcgcg
     private Camera camera = new Camera();
     protected List<Objeto> objetosLista = new List<Objeto>();
     private ObjetoAramado objetoSelecionado = null;
+    private Ponto4D pontoSelecionado = null;
+    private bool moverPto = false;
+    private PrimitiveType tipoPrimitiva = PrimitiveType.LineLoop;
     private bool bBoxDesenhar = false;
     int mouseX, mouseY;   //FIXME: achar método MouseDown para não ter variável Global
     private ObjetoAramado objetoNovo = null;
@@ -61,6 +64,95 @@ namespace gcgcg
       this.SwapBuffers();
     }
 
+    protected override void OnMouseDown(MouseButtonEventArgs e)
+    {
+
+        if (e.Button == MouseButton.Right)
+        {
+            MoverPonto();
+        }
+        else if (e.Button == MouseButton.Left)
+        {
+            AdicionarPoligono();
+        }
+    }
+
+    private void MoverPonto()
+    {
+        Ponto4D pontoNovo = new Ponto4D(mouseX, mouseY, 0);
+
+        double maiorDistancia = double.MaxValue;
+        foreach (var objeto in objetosLista)
+        {
+            var poligono = (ObjetoAramado)objeto;
+            foreach (var pontoAtual in poligono.ObterPontos())
+            {
+                double distancia = CalcularDistancia(pontoAtual, pontoNovo);
+                if (distancia < maiorDistancia)
+                {
+                    maiorDistancia = distancia;
+                    pontoSelecionado = pontoAtual;
+                    objetoSelecionado = poligono ;
+                }
+            }
+        }
+    }
+
+    private void ApagarPontoAtual()
+        {
+            if (objetoNovo != null)
+            {
+                if (objetoNovo.QuantidadePontos() > 2)
+                {
+                    objetoNovo.RemoverUltimoPonto();
+                }
+                else if (objetoNovo.QuantidadePontos() == 2)
+                {
+                    objetoNovo.RemoverUltimoPonto();
+                    objetosLista.Remove(objetoNovo);
+                    objetoNovo = null;
+                }
+            }
+        }
+
+    private void RemoverPontoSelecionado()
+    {
+        if (objetoSelecionado != null && pontoSelecionado != null)
+        {
+            objetoSelecionado.RemoverPonto(pontoSelecionado);
+        }
+    }
+
+    private void AdicionarPoligono()
+    {
+      if (pontoSelecionado != null)
+        {
+            pontoSelecionado.X = mouseX;
+            pontoSelecionado.Y = mouseY;
+            pontoSelecionado = null;
+            objetoSelecionado = null;
+        }
+        else if (objetoNovo == null)
+        {
+          objetoNovo = new ObjetoAramado(objetoId + 1);
+          objetoNovo.DefinirPrimitiva(tipoPrimitiva);
+          objetosLista.Add(objetoNovo);
+          objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+          objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));  // N3-Exe6: "troque" para deixar o rastro
+        }
+        else
+          objetoNovo.DefinirPrimitiva(tipoPrimitiva);
+          objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+    }
+
+    private double CalcularDistancia(Ponto4D pontoAtual, Ponto4D pontoNovo)
+        {
+            double a = (pontoNovo.X - pontoAtual.X);
+            double b = (pontoNovo.Y - pontoAtual.Y);
+            double disctancia = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            return disctancia;
+        }
+
     protected override void OnKeyDown(OpenTK.Input.KeyboardKeyEventArgs e)
     {
       // N3-Exe2: usar o arquivo docs/umlClasses.wsd
@@ -79,7 +171,10 @@ namespace gcgcg
       else if (e.Key == Key.M)
         objetoSelecionado.ExibeMatriz();
       else if (e.Key == Key.P)
+      {
         objetoSelecionado.PontosExibirObjeto();
+        tipoPrimitiva = PrimitiveType.LineStrip;
+      }
       else if (e.Key == Key.I)
         objetoSelecionado.AtribuirIdentidade();
       //FIXME: não está atualizando a BBox com as transformações geométricas
@@ -91,6 +186,10 @@ namespace gcgcg
         objetoSelecionado.TranslacaoXY(0, 10);      // N3-Exe10: translação
       else if (e.Key == Key.Down)
         objetoSelecionado.TranslacaoXY(0, -10);     // N3-Exe10: translação
+      else if(e.Key == Key.D)
+        ApagarPontoAtual();
+      else if (e.Key == Key.V)
+        RemoverPontoSelecionado();
       else if (e.Key == Key.PageUp)
         objetoSelecionado.EscalaXY(2, 2);
       else if (e.Key == Key.PageDown)
@@ -137,14 +236,23 @@ namespace gcgcg
       }
       else if (e.Key == Key.Space)
       {
-        if (objetoNovo == null)
+        if (pontoSelecionado != null)
+        {
+            pontoSelecionado.X = mouseX;
+            pontoSelecionado.Y = mouseY;
+            pontoSelecionado = null;
+            objetoSelecionado = null;
+        }
+        else if (objetoNovo == null)
         {
           objetoNovo = new ObjetoAramado(objetoId + 1);
+          objetoNovo.DefinirPrimitiva(tipoPrimitiva);
           objetosLista.Add(objetoNovo);
           objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
           objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));  // N3-Exe6: "troque" para deixar o rastro
         }
         else
+          objetoNovo.DefinirPrimitiva(tipoPrimitiva);
           objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
       }
       else if (e.Key == Key.Number9)

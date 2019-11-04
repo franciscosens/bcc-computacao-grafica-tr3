@@ -10,11 +10,12 @@ Alunos:
 
 # Atalhos
 
-
 | Questão                                       | Atalho                | Objetivo                                      | 
 | --------------------------------------------- | --------------------- | -----------------                             |
 | 04 - Estrutura de dados: polígono             | Botão Mouse Esquerdo  | Inserir ponto no polígono atual               |
+| 04 - Estrutura de dados: polígono             | Espaço                | Inserir ponto no polígono atual               |
 | 04 - Estrutura de dados: polígono             | D                     | Remove ponto do polígono atual                |
+| 04 - Estrutura de dados: polígono             | T                     | Remove todos os pontos do polígono atual      |
 | 04 - Estrutura de dados: polígono             | Enter                 | Finaliza o polígono atual                     |
 | 05 - Estrutura de dados: vértices             | Botão Mouse Direito   | Seleciona o polígono com vértice mais próximo |
 | 05 - Estrutura de dados: vértices             | U OU V verificar      | Apaga o vértice do polígono selecionado       |
@@ -30,18 +31,14 @@ Alunos:
 | 10 - Transformações Geométricas: translação   | Esquerda              | Translação                                    |
 | 11 - Transformações Geométricas: escala       | Home                  | Escala                                        |
 | 11 - Transformações Geométricas: escala       | End                   | Escala                                        |
+| 11 - Transformações Geométricas: escala       | Page Up               | Escala                                        |
+| 11 - Transformações Geométricas: escala       | Page Down             | Escala                                        |
+| 12 - Transformações Geométricas: rotação      | Número 1              | Rotação                                       |
+| 12 - Transformações Geométricas: rotação      | Número 2              | Rotação                                       |
 | 12 - Transformações Geométricas: rotação      | Número 3              | Rotação                                       |
 | 12 - Transformações Geométricas: rotação      | Número 4              | Rotação                                       |
 | 13 - Grafo de cena: selecionar                |                       |                                               |
 | 14 - Grafo de cena: transformação             |                       |                                               |
-
-Conversar 
-* T
-* Page Up
-* Page Down
-* Número 1
-* Número 2
-* Espaço
 
 # Enunciado
 

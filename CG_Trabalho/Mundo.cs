@@ -134,7 +134,6 @@ namespace gcgcg
             }
             else
             {
-
                 if (objetoNovo == null)
                 {
                     objetoNovo = new ObjetoAramado(objetoId + 1);
@@ -186,8 +185,11 @@ namespace gcgcg
                         objetoSelecionado.ExibeMatriz();
                     break;
                 case Key.P:
-                    objetoSelecionado.PontosExibirObjeto();
-                    tipoPrimitiva = PrimitiveType.LineStrip;
+                    if(objetoSelecionado != null)
+                        objetoSelecionado.PontosExibirObjeto();
+
+                    tipoPrimitiva = tipoPrimitiva == PrimitiveType.LineStrip ? PrimitiveType.LineLoop : PrimitiveType.LineStrip;
+                    objetoNovo.DefinirPrimitiva(tipoPrimitiva);
                     break;
                 case Key.I:
                     if (objetoSelecionado != null)
@@ -296,24 +298,7 @@ namespace gcgcg
                     }
                     break;
                 case Key.Space:
-                    if (pontoSelecionado != null)
-                    {
-                        pontoSelecionado.X = mouseX;
-                        pontoSelecionado.Y = mouseY;
-                        pontoSelecionado = null;
-                        objetoSelecionado = null;
-                    }
-                    else if (objetoNovo == null)
-                    {
-                        objetoNovo = new ObjetoAramado(objetoId + 1);
-                        objetoNovo.DefinirPrimitiva(tipoPrimitiva);
-                        objetosLista.Add(objetoNovo);
-                        objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
-                        objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));  // N3-Exe6: "troque" para deixar o rastro
-                    }
-                    else
-                        objetoNovo.DefinirPrimitiva(tipoPrimitiva);
-                    objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+                    AdicionarPoligono();
                     break;
                 case Key.Number9:
                     objetoSelecionado = null;   //TODO: remover está tecla e atribuir o null qdo não tiver um poligono

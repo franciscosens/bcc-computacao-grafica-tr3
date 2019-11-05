@@ -143,7 +143,7 @@ Atenção: usar matriz de transformação global para acumular transformações 
 	- clicar P tecla ai troca para line_strap
 - 8 troca a cor do poligno selecionado
 
-# Diagrama
+# Diagrama de Classes
 ![Diagrama](assets/Diagrama.png)
 
 

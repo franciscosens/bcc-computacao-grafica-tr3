@@ -37,7 +37,12 @@ Alunos:
 | 12 - Transformações Geométricas: rotação      | Número 2              | Rotação                                       |
 | 12 - Transformações Geométricas: rotação      | Número 3              | Rotação                                       |
 | 12 - Transformações Geométricas: rotação      | Número 4              | Rotação                                       |
+| 13 - Grafo de cena: selecionar                | F                     | Permitir adicionar filhos                     |
 | 13 - Grafo de cena: selecionar                |                       |                                               |
+| 13 - Grafo de cena: selecionar                |                       |                                               |
+| 13 - Grafo de cena: selecionar                |                       |                                               |
+| 13 - Grafo de cena: selecionar                |                       |                                               |
+
 | 14 - Grafo de cena: transformação             |                       |                                               |
 
 # Enunciado
@@ -140,3 +145,8 @@ Atenção: usar matriz de transformação global para acumular transformações 
 
 # Diagrama
 ![Diagrama](assets/Diagrama.png)
+
+
+Deve-se ter um polígono,  apertar F e daí começa a desenha outro polígono sendo filho do polígono selecionado, ao apertar enter para o filho e tira a seleção do pai
+
+Ao selecionar um deve-se selecionar a BBox

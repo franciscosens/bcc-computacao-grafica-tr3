@@ -22,7 +22,7 @@ namespace gcgcg
         private bool moverPto = false;
         private PrimitiveType tipoPrimitiva = PrimitiveType.LineLoop;
         private bool bBoxDesenhar = false;
-        int mouseX, mouseY;   //FIXME: achar método MouseDown para não ter variável Global
+        int mouseX, mouseY;
         private ObjetoAramado objetoNovo = null;
         private String objetoId = "A";
 
@@ -65,6 +65,12 @@ namespace gcgcg
             this.SwapBuffers();
         }
 
+        /// <summary>
+        /// Método que controla a ação do mouse.
+        /// </summary>
+        /// <remarks>
+        /// Botão direito move o vértice selecionado e botão esquerdo insere o polígono.
+        /// </remarks>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
 
@@ -78,7 +84,10 @@ namespace gcgcg
             }
         }
 
-        private void MoverPonto()
+        /// <summary>
+        /// Método que permite mover o vértice selecionado.
+        /// </summary>
+       private void MoverPonto()
         {
             Ponto4D pontoNovo = new Ponto4D(mouseX, mouseY, 0);
 
@@ -99,6 +108,9 @@ namespace gcgcg
             }
         }
 
+        /// <summary>
+        /// Método que permite remover o vértice selecionado.
+        /// </summary>
         private void ApagarPontoAtual()
         {
             if (objetoNovo != null)
@@ -116,6 +128,9 @@ namespace gcgcg
             }
         }
 
+        /// <summary>
+        /// Método que permite remover o vértice selecionado.
+        /// </summary>
         private void RemoverPontoSelecionado()
         {
             if (objetoSelecionado != null && pontoSelecionado != null)
@@ -124,6 +139,9 @@ namespace gcgcg
             }
         }
 
+        /// <summary>
+        /// Método que permite inserir vértice no polígono atual. Mostra o rastro ao desenhar segmentos do polígono
+        /// </summary>
         private void AdicionarPoligono()
         {
             if (pontoSelecionado != null)
@@ -150,6 +168,12 @@ namespace gcgcg
             }
         }
 
+        /// <summary>
+        /// Método que calcula a distância entre o vértice atual e o novo vértice.
+        /// </summary>
+        /// <param name="pontoAtual"></param>
+        /// <param name="pontoNovo"></param>
+        /// <returns> Retorna a distância entre os dois pontos.</returns>
         private double CalcularDistancia(Ponto4D pontoAtual, Ponto4D pontoNovo)
         {
             double a = (pontoNovo.X - pontoAtual.X);
@@ -164,96 +188,94 @@ namespace gcgcg
             // N3-Exe3: usar o arquivo bin/documentação.XML -> ver exemplo CG_Biblioteca/bin/documentação.XML
             switch (e.Key)
             {
-                case Key.Escape:
+                case Key.Escape: // N3-Exe4: Inserir ponto no polígono atual
                     Exit();
                     break;
-                case Key.E:
+                case Key.E: // Exibe os pontos do polígono
                     {
                         for (var i = 0; i < objetosLista.Count; i++)
                         {
                             objetosLista[i].PontosExibirObjeto();
                         }
-
                         break;
                     }
-
                 case Key.O:
-                    bBoxDesenhar = !bBoxDesenhar;   // N3-Exe9: exibe a BBox
+                    bBoxDesenhar = !bBoxDesenhar; // N3-Exe9: exibe a BBox
                     break;
-                case Key.M:
+                case Key.M: // Exibe a matriz
                     if (objetoSelecionado != null)
                         objetoSelecionado.ExibeMatriz();
                     break;
-                case Key.P:
+                case Key.P: // N3-Exe7: Desenhar polígonos abertos ou fechados
                     if(objetoSelecionado != null)
                         objetoSelecionado.PontosExibirObjeto();
 
                     tipoPrimitiva = tipoPrimitiva == PrimitiveType.LineStrip ? PrimitiveType.LineLoop : PrimitiveType.LineStrip;
                     objetoNovo.DefinirPrimitiva(tipoPrimitiva);
                     break;
-                case Key.I:
+                case Key.I: // Atribui a matriz identidade
                     if (objetoSelecionado != null)
                         objetoSelecionado.AtribuirIdentidade();
                     break;
-                case Key.Left:
+                case Key.Left: // N3-Exe10: translação esquerda
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(-10, 0);     // N3-Exe10: translação
+                        objetoSelecionado.TranslacaoXY(-10, 0);     
                     break;
-                case Key.Right:
+                case Key.Right: // N3-Exe10: translação direita
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(10, 0);      // N3-Exe10: translação
+                        objetoSelecionado.TranslacaoXY(10, 0);      
                     break;
-                case Key.Up:
+                case Key.Up: // N3-Exe10: translação cima
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(0, 10);      // N3-Exe10: translação
+                        objetoSelecionado.TranslacaoXY(0, 10);      
                     break;
-                case Key.Down:
+                case Key.Down: // N3-Exe10: translação baixo
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(0, -10);     // N3-Exe10: translação
+                        objetoSelecionado.TranslacaoXY(0, -10);     
                     break;
-                case Key.D:
+                case Key.D: // N3-Exe4: Remove vértice do polígono atual
                     ApagarPontoAtual();
                     break;
-                case Key.V:
+                case Key.V: // N3-Exe4: Remove vértice do polígono selecionado
                     RemoverPontoSelecionado();
                     break;
-                case Key.PageUp:
+                case Key.PageUp: // N3-Exe11: escala
                     if (objetoSelecionado != null)
                         objetoSelecionado.EscalaXY(2, 2);
                     break;
-                case Key.PageDown:
+                case Key.PageDown: // N3-Exe11: escala
                     if (objetoSelecionado != null)
                         objetoSelecionado.EscalaXY(0.5, 0.5);
                     break;
-                case Key.Home:
+                case Key.Home: // N3-Exe11: escala
                     if (objetoSelecionado != null)
-                        objetoSelecionado.EscalaXYBBox(0.5);        // N3-Exe11: escala
+                        objetoSelecionado.EscalaXYBBox(0.5);        
                     break;
-                case Key.End:
+                case Key.End: // N3-Exe11: escala
                     if (objetoSelecionado != null)
-                        objetoSelecionado.EscalaXYBBox(2);          // N3-Exe11: escala
+                        objetoSelecionado.EscalaXYBBox(2);
                     break;
-                case Key.Number1:
+                case Key.Number1: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
                         objetoSelecionado.RotacaoZ(10);
                     break;
-                case Key.Number2:
+                case Key.Number2: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
                         objetoSelecionado.RotacaoZ(-10);
                     break;
-                case Key.Number3:
+                case Key.Number3: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
-                        objetoSelecionado.RotacaoZBBox(10);         // N3-Exe12: rotação
+                        objetoSelecionado.RotacaoZBBox(10);
                     break;
-                case Key.Number4:
+                case Key.Number4: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
-                        objetoSelecionado.RotacaoZBBox(-10);        // N3-Exe12: rotação
+                        objetoSelecionado.RotacaoZBBox(-10);
                     break;
-                case Key.T:
-                    if (objetoSelecionado != null)
+                case Key.T: // N3-Exe4: Remve todos os vértices do polígono selecionado
+                   if (objetoSelecionado != null)
                         objetoSelecionado.PontosRemoverTodos();
                     break;
-                case Key.U:
+                case Key.U: // N3-Exe4: Remve o último vértice adicionado do polígono selecionado
                     if (objetoSelecionado != null)
                     {
                         objetoSelecionado.PontosRemoverUltimo();
@@ -261,49 +283,46 @@ namespace gcgcg
                             objetoSelecionado = null;
                     }
                     break;
-                case Key.R:
+                case Key.R: // N3-Exe8: Muda a cor do polígono selecionado para vermelho
                     if (objetoSelecionado != null)
                         objetoSelecionado.Cor = Color.Red;
                     break;
-                case Key.S:
+                case Key.S: // Seleciona o ponto do polígono mais próximo do clique
                     {
                         foreach (ObjetoAramado objeto in objetosLista)
                         {
                             bool isInside = objeto.IsPointInPolygon(new Ponto4D(mouseX, mouseY));
-
                             if (isInside)
                             {
                                 objetoSelecionado = objeto;
                                 break;
                             }
                         }
-
                         break;
                     }
-
-                case Key.G:
+                case Key.G: // N3-Exe8: Muda a cor do polígono selecionado para verde
                     if (objetoSelecionado != null)
                         objetoSelecionado.Cor = Color.Green;
                     break;
-                case Key.B:
+                case Key.B: // N3-Exe8: Muda a cor do polígono selecionado para azul
                     if (objetoSelecionado != null)
                         objetoSelecionado.Cor = Color.Blue;
                     break;
-                case Key.Enter:
+                case Key.Enter: // N3-Exe4: Finaliza o polígono atual
                     if (objetoNovo != null)
                     {
                         objetoSelecionado = objetoNovo;
-                        objetoNovo.PontosRemoverUltimo();   // N3-Exe6: "troque" para deixar o rastro
+                        objetoNovo.PontosRemoverUltimo(); // N3-Exe6: "troque" para deixar o rastro
                         objetoNovo = null;
                     }
                     break;
-                case Key.Space:
+                case Key.Space: // N3-Exe4: Inserir ponto no polígono atual
                     AdicionarPoligono();
                     break;
                 case Key.Number9:
-                    objetoSelecionado = null;   //TODO: remover está tecla e atribuir o null qdo não tiver um poligono
+                    objetoSelecionado = null; //TODO: remover está tecla e atribuir o null qdo não tiver um poligono
                     break;
-            }   //TODO: remover está tecla e atribuir o null qdo não tiver um poligono
+            }
         }
 
         //FIXME: não está considerando o NDC
@@ -312,7 +331,7 @@ namespace gcgcg
             mouseX = e.Position.X; mouseY = 600 - e.Position.Y; // Inverti eixo Y
             if (objetoNovo != null)
             {
-                objetoNovo.PontosUltimo().X = mouseX;             // N3-Exe5: movendo um vértice de um poligono específico
+                objetoNovo.PontosUltimo().X = mouseX; // N3-Exe5: movendo um vértice de um poligono específico
                 objetoNovo.PontosUltimo().Y = mouseY;
             }
         }

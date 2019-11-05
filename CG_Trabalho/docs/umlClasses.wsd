@@ -1,13 +1,35 @@
 /' http://plantuml.com/class-diagram '/ 
-
-@startuml CG-N3
+@startuml CG_Biblioteca
 
 title Diagrama de Classes
 footer Grupo GCG - [[http://gcg.inf.furb.br]]
 
-!include ../../CG-N2/docs/umlClasses.wsd
+Mundo : - Mundo instanciaMundo
+Mundo : - Camera camera
+Mundo : # List<Objeto> objetosLista
+Mundo : - ObjetoAramado objetoSelecionado
+Mundo : - Ponto4D pontoSelecionado
+Mundo : - bool moverPto
+Mundo : - PrimitiveType tipoPrimitiva
+Mundo : - bool bBoxDesenhar
+Mundo : + int mouseX
+Mundo : + int mouseY
+Mundo : - ObjetoAramado objetoNovo
+Mundo : - String objetoId
 
-Mundo : - void Metodos_CG-N3()
-
+Mundo : - Mundo(int width, int height)
+Mundo : + Mundo GetInstance(int width, int height)
+Mundo : # void OnLoad(EventArgs e)
+Mundo : # void OnUpdateFrame(FrameEventArgs e)
+Mundo : # void OnRenderFrame(FrameEventArgs e)
+Mundo : # void OnMouseDown(MouseButtonEventArgs e)
+Mundo : - void MoverPonto()
+Mundo : - void ApagarPontoAtual()
+Mundo : - void RemoverPontoSelecionado()
+Mundo : - void AdicionarPoligono()
+Mundo : - double CalcularDistancia(Ponto4D pontoAtual, Ponto4D pontoNovo)
+Mundo : # void OnKeyDown(KeyboardKeyEventArgs e)
+Mundo : # void OnMouseMove(MouseMoveEventArgs e)
+Mundo : - void Sru3D()
 
 @enduml

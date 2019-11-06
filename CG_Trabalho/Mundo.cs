@@ -17,14 +17,14 @@ namespace gcgcg
         private static Mundo instanciaMundo = null;
         private Camera camera = new Camera();
         protected List<Objeto> objetosLista = new List<Objeto>();
-        private ObjetoAramado objetoSelecionado = null;
         private Ponto4D pontoSelecionado = null;
         private bool moverPto = false;
         private PrimitiveType tipoPrimitiva = PrimitiveType.LineLoop;
         private bool bBoxDesenhar = false;
         int mouseX, mouseY;
-        private ObjetoAramado objetoNovo = null;
-        private String objetoId = "A";
+        private ObjetoAramado objetoNovo = null, objetoFilho = null, objetoSelecionado = null;
+        private int objetoId = 0;
+        private bool adicionarFilhos = false;
 
         private Mundo(int width, int height) : base(width, height) { }
 
@@ -40,7 +40,7 @@ namespace gcgcg
             base.OnLoad(e);
             GL.ClearColor(Color.Gray);
         }
-        
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
@@ -48,7 +48,7 @@ namespace gcgcg
             GL.LoadIdentity();
             GL.Ortho(camera.xmin, camera.xmax, camera.ymin, camera.ymax, camera.zmin, camera.zmax);
         }
-        
+
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
@@ -87,7 +87,7 @@ namespace gcgcg
         /// <summary>
         /// Método que permite mover o vértice selecionado.
         /// </summary>
-       private void MoverPonto()
+        private void MoverPonto()
         {
             Ponto4D pontoNovo = new Ponto4D(mouseX, mouseY, 0);
 
@@ -105,6 +105,10 @@ namespace gcgcg
                         objetoSelecionado = poligono;
                     }
                 }
+            }
+            if(objetoSelecionado != null)
+            {
+                bBoxDesenhar = true;
             }
         }
 
@@ -144,17 +148,36 @@ namespace gcgcg
         /// </summary>
         private void AdicionarPoligono()
         {
+
             if (pontoSelecionado != null)
             {
-                pontoSelecionado.X = mouseX;
-                pontoSelecionado.Y = mouseY;
-                pontoSelecionado = null;
+                if (adicionarFilhos == true)
+                {
+                    if (objetoFilho == null)
+                    {
+                        objetoFilho = new ObjetoAramado("A" + ++objetoId);
+                        objetoFilho.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+                        objetoFilho.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+                        objetoSelecionado.FilhoAdicionar(objetoFilho);
+                    }
+                    objetoFilho.DefinirPrimitiva(tipoPrimitiva);
+                    objetoFilho.PontosAdicionar(new Ponto4D(mouseX, mouseY));
+
+                }
+                else
+                {
+                    pontoSelecionado.X = mouseX;
+                    pontoSelecionado.Y = mouseY;
+                    pontoSelecionado = null;
+                    objetoSelecionado = null;
+                    bBoxDesenhar = false;
+                }
             }
             else
             {
                 if (objetoNovo == null)
                 {
-                    objetoNovo = new ObjetoAramado(objetoId + 1);
+                    objetoNovo = new ObjetoAramado("A" + ++objetoId);
                     objetoNovo.DefinirPrimitiva(tipoPrimitiva);
                     objetosLista.Add(objetoNovo);
                     objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
@@ -191,6 +214,14 @@ namespace gcgcg
                 case Key.Escape: // N3-Exe4: Inserir ponto no polígono atual
                     Exit();
                     break;
+                case Key.C:
+                    Console.Clear();
+                    break;
+
+                case Key.X:
+                    if (objetoSelecionado != null)
+                        objetoSelecionado.PontosExibirObjeto();
+                    break;
                 case Key.E: // Exibe os pontos do polígono
                     {
                         for (var i = 0; i < objetosLista.Count; i++)
@@ -207,11 +238,11 @@ namespace gcgcg
                         objetoSelecionado.ExibeMatriz();
                     break;
                 case Key.P: // N3-Exe7: Desenhar polígonos abertos ou fechados
-                    if(objetoSelecionado != null)
-                        objetoSelecionado.PontosExibirObjeto();
-
-                    tipoPrimitiva = tipoPrimitiva == PrimitiveType.LineStrip ? PrimitiveType.LineLoop : PrimitiveType.LineStrip;
-                    objetoNovo.DefinirPrimitiva(tipoPrimitiva);
+                    if (objetoNovo != null)
+                    {
+                        tipoPrimitiva = tipoPrimitiva == PrimitiveType.LineStrip ? PrimitiveType.LineLoop : PrimitiveType.LineStrip;
+                        objetoNovo.DefinirPrimitiva(tipoPrimitiva);
+                    }
                     break;
                 case Key.I: // Atribui a matriz identidade
                     if (objetoSelecionado != null)
@@ -219,19 +250,19 @@ namespace gcgcg
                     break;
                 case Key.Left: // N3-Exe10: translação esquerda
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(-10, 0);     
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.TranslacaoXY, -10, 0);
                     break;
                 case Key.Right: // N3-Exe10: translação direita
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(10, 0);      
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.TranslacaoXY, 10, 0);
                     break;
                 case Key.Up: // N3-Exe10: translação cima
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(0, 10);      
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.TranslacaoXY, 0, 10);
                     break;
                 case Key.Down: // N3-Exe10: translação baixo
                     if (objetoSelecionado != null)
-                        objetoSelecionado.TranslacaoXY(0, -10);     
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.TranslacaoXY, 0, -10);
                     break;
                 case Key.D: // N3-Exe4: Remove vértice do polígono atual
                     ApagarPontoAtual();
@@ -241,38 +272,38 @@ namespace gcgcg
                     break;
                 case Key.PageUp: // N3-Exe11: escala
                     if (objetoSelecionado != null)
-                        objetoSelecionado.EscalaXY(2, 2);
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.EscalaXY, 2, 2);
                     break;
                 case Key.PageDown: // N3-Exe11: escala
                     if (objetoSelecionado != null)
-                        objetoSelecionado.EscalaXY(0.5, 0.5);
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.EscalaXY, 0.5, 0.5);
                     break;
                 case Key.Home: // N3-Exe11: escala
                     if (objetoSelecionado != null)
-                        objetoSelecionado.EscalaXYBBox(0.5);        
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.EscalaXYBBox, 0.5);
                     break;
                 case Key.End: // N3-Exe11: escala
                     if (objetoSelecionado != null)
-                        objetoSelecionado.EscalaXYBBox(2);
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.EscalaXYBBox, 2);
                     break;
                 case Key.Number1: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
-                        objetoSelecionado.RotacaoZ(10);
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.RotacaoZ, 10);
                     break;
                 case Key.Number2: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
-                        objetoSelecionado.RotacaoZ(-10);
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.RotacaoZ, -10);
                     break;
                 case Key.Number3: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
-                        objetoSelecionado.RotacaoZBBox(10);
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.RotacaoZBBox, 10);
                     break;
                 case Key.Number4: // N3-Exe12: rotação
                     if (objetoSelecionado != null)
-                        objetoSelecionado.RotacaoZBBox(-10);
+                        objetoSelecionado.AplicarTransformacao(ObjetoAramado.RotacaoZBBox, -10);
                     break;
                 case Key.T: // N3-Exe4: Remve todos os vértices do polígono selecionado
-                   if (objetoSelecionado != null)
+                    if (objetoSelecionado != null)
                         objetoSelecionado.PontosRemoverTodos();
                     break;
                 case Key.U: // N3-Exe4: Remve o último vértice adicionado do polígono selecionado
@@ -295,6 +326,7 @@ namespace gcgcg
                             if (isInside)
                             {
                                 objetoSelecionado = objeto;
+                                adicionarFilhos = false;
                                 break;
                             }
                         }
@@ -309,7 +341,16 @@ namespace gcgcg
                         objetoSelecionado.Cor = Color.Blue;
                     break;
                 case Key.Enter: // N3-Exe4: Finaliza o polígono atual
-                    if (objetoNovo != null)
+                    if (objetoFilho != null)
+                    {
+                        objetoFilho.PontosRemoverUltimo();
+                        adicionarFilhos = false;
+                        objetoFilho = null;
+                        objetoSelecionado = null;
+                        objetoNovo = null;
+                        pontoSelecionado = null;
+                    }
+                    else if (objetoNovo != null)
                     {
                         objetoSelecionado = objetoNovo;
                         objetoNovo.PontosRemoverUltimo(); // N3-Exe6: "troque" para deixar o rastro
@@ -318,6 +359,9 @@ namespace gcgcg
                     break;
                 case Key.Space: // N3-Exe4: Inserir ponto no polígono atual
                     AdicionarPoligono();
+                    break;
+                case Key.F:
+                    adicionarFilhos = true;
                     break;
                 case Key.Number9:
                     objetoSelecionado = null; //TODO: remover está tecla e atribuir o null qdo não tiver um poligono
@@ -328,11 +372,17 @@ namespace gcgcg
         //FIXME: não está considerando o NDC
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
-            mouseX = e.Position.X; mouseY = 600 - e.Position.Y; // Inverti eixo Y
+            mouseX = e.Position.X;
+            mouseY = 600 - e.Position.Y; // Inverti eixo Y
             if (objetoNovo != null)
             {
                 objetoNovo.PontosUltimo().X = mouseX; // N3-Exe5: movendo um vértice de um poligono específico
                 objetoNovo.PontosUltimo().Y = mouseY;
+            }
+            else if (objetoFilho != null)
+            {
+                objetoFilho.PontosUltimo().X = mouseX; // N3-Exe5: movendo um vértice de um poligono específico
+                objetoFilho.PontosUltimo().Y = mouseY;
             }
         }
 

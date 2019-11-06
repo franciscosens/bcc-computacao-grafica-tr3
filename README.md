@@ -12,6 +12,9 @@ Alunos:
 
 | Questão                                       | Atalho                | Objetivo                                      | 
 | --------------------------------------------- | --------------------- | -----------------                             |
+|                                               | ESC                   | Sair                                          |
+|                                               | C                     | Limpar Console                                |
+|                                               | X                     | Apresentar Pontos                             |
 | 04 - Estrutura de dados: polígono             | Botão Mouse Esquerdo  | Inserir ponto no polígono atual               |
 | 04 - Estrutura de dados: polígono             | Espaço                | Inserir ponto no polígono atual               |
 | 04 - Estrutura de dados: polígono             | D                     | Remove ponto do polígono atual                |

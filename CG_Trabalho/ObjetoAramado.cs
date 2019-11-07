@@ -48,6 +48,16 @@ namespace gcgcg
             base.BBox.ProcessarCentro();
         }
 
+        public void ReprocessarBBox()
+        {
+            base.BBox.Atribuir(pontosLista[0]);
+            foreach (var ponto in pontosLista)
+            {
+                base.BBox.Atualizar(ponto);
+            }
+            base.BBox.ProcessarCentro();
+        }
+
         /// <summary>
         /// Método para remover o último vértice adicionado no polígono
         /// </summary>
@@ -105,10 +115,10 @@ namespace gcgcg
                 Ponto4D pontoProximo = i + 1 < pontosLista.Count ? pontosLista[i + 1] : pontosLista[i];
 
                 double ti = (pontoSelecao.Y - pontoAtual.Y) / (pontoProximo.Y - pontoAtual.Y);
-                if(ti >= 0 && ti <= 1)
+                if (ti >= 0 && ti <= 1)
                 {
                     double xi = pontoAtual.X + ((pontoProximo.X - pontoAtual.X) * ti);
-                    if(xi >= pontoSelecao.X)
+                    if (xi >= pontoSelecao.X)
                     {
                         numeroInterseccoes++;
                     }

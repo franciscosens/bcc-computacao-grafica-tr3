@@ -41,11 +41,6 @@ Alunos:
 | 12 - Transformações Geométricas: rotação      | Número 3              | Rotação                                       |
 | 12 - Transformações Geométricas: rotação      | Número 4              | Rotação                                       |
 | 13 - Grafo de cena: selecionar                | F                     | Permitir adicionar filhos                     |
-| 13 - Grafo de cena: selecionar                |                       |                                               |
-| 13 - Grafo de cena: selecionar                |                       |                                               |
-| 13 - Grafo de cena: selecionar                |                       |                                               |
-| 13 - Grafo de cena: selecionar                |                       |                                               |
-
 | 14 - Grafo de cena: transformação             |                       |                                               |
 
 # Enunciado

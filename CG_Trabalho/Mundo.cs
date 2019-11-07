@@ -17,7 +17,7 @@ namespace gcgcg
         private static Mundo instanciaMundo = null;
         private Camera camera = new Camera();
         protected List<Objeto> objetosLista = new List<Objeto>();
-        private Ponto4D pontoSelecionado = null;
+        private Ponto4D pontoSelecionado = null, pontoSelecionadoOriginal = null;
         private bool moverPto = false;
         private PrimitiveType tipoPrimitiva = PrimitiveType.LineLoop;
         private bool bBoxDesenhar = false;
@@ -107,6 +107,7 @@ namespace gcgcg
                         {
                             maiorDistancia = distancia;
                             pontoSelecionado = pontoAtual;
+                            pontoSelecionadoOriginal = new Ponto4D(pontoAtual);
                         }
                     }
                     break;
@@ -169,6 +170,13 @@ namespace gcgcg
             if (objetoSelecionado != null && pontoSelecionado != null)
             {
                 objetoSelecionado.RemoverPonto(pontoSelecionado);
+                if (objetoSelecionado.QuantidadePontos() == 1)
+                {
+                    objetosLista.Remove(objetoSelecionado);
+                    objetoSelecionado = null;
+                    pontoSelecionado = null;
+                    bBoxDesenhar = false;
+                }
             }
         }
 
@@ -186,36 +194,37 @@ namespace gcgcg
                     {
                         objetoFilho = new ObjetoAramado("A" + ++objetoId);
                         objetoFilho.PontosAdicionar(new Ponto4D(mouseX, mouseY));
-                        objetoFilho.PontosAdicionar(new Ponto4D(mouseX, mouseY));
-                        objetoSelecionado.FilhoAdicionar(objetoFilho);
                     }
                     objetoFilho.DefinirPrimitiva(tipoPrimitiva);
                     objetoFilho.PontosAdicionar(new Ponto4D(mouseX, mouseY));
-
+                    objetoSelecionado.FilhoAdicionar(objetoFilho);
                 }
                 else
                 {
                     pontoSelecionado.X = mouseX;
                     pontoSelecionado.Y = mouseY;
+                    objetoSelecionado.ReprocessarBBox();
                     pontoSelecionado = null;
+                    pontoSelecionadoOriginal = null;
                     objetoSelecionado = null;
                     bBoxDesenhar = false;
                 }
             }
             else
             {
+                adicionarFilhos = false;
                 if (objetoNovo == null)
                 {
                     objetoNovo = new ObjetoAramado("A" + ++objetoId);
                     objetoNovo.DefinirPrimitiva(tipoPrimitiva);
                     objetosLista.Add(objetoNovo);
                     objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
-                    objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));  // N3-Exe6: "troque" para deixar o rastro
                 }
                 else
                 {
                     objetoNovo.DefinirPrimitiva(tipoPrimitiva);
                 }
+
                 objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
             }
         }
@@ -377,6 +386,12 @@ namespace gcgcg
                     break;
                 case Key.F:
                     adicionarFilhos = true;
+                    if (pontoSelecionado != null && pontoSelecionadoOriginal != null)
+                    {
+                        pontoSelecionado.X = pontoSelecionadoOriginal.X;
+                        pontoSelecionado.Y = pontoSelecionadoOriginal.Y;
+                        pontoSelecionado = null;
+                    }
                     break;
                 case Key.Number9:
                     objetoSelecionado = null; //TODO: remover está tecla e atribuir o null qdo não tiver um poligono
@@ -398,6 +413,11 @@ namespace gcgcg
             {
                 objetoFilho.PontosUltimo().X = mouseX; // N3-Exe5: movendo um vértice de um poligono específico
                 objetoFilho.PontosUltimo().Y = mouseY;
+            }
+            else if (pontoSelecionado != null)
+            {
+                pontoSelecionado.X = mouseX;
+                pontoSelecionado.Y = mouseY;
             }
         }
 

@@ -43,6 +43,9 @@ Alunos:
 | 13 - Grafo de cena: selecionar                | F                     | Permitir adicionar filhos                     |
 | 14 - Grafo de cena: transformação             |                       |                                               |
 
+# Diagrama de Classes
+![Diagrama](assets/Diagrama.png)
+
 # Enunciado
 
 ## 1 - O que deve ser feito
@@ -122,29 +125,3 @@ Considere a transformação global ao transformar (translação/escala/rotação
 
 Atenção: usar matriz de transformação global para acumular transformações de acordo com o grafo de cena.
 
-## Obs: 
-
-- [x] Quando clicar com o botão esquerdo, criar um Ponto4D na tela
-- [x] Quando clicar na tecla D, remover o ponto que está na variavel 'polignoAtual' que ficará localizada no Mundo.
-- [x] O último ponto adicionado ficará armazenado no polignoAtual, caso o ponto é removido, adcionar null na variavel.
-- [x] Ao clicar na barra de espaço, deverá parar o poligno.
-- [x] Quando criar um ponto, criar outro igual.
-- Quando o usuário mecher o mouse, mover o segundo ponto.
-- Clicar na tecla P, altera a primitva Line_loop para line_tr
-- 4 clica na tela com mouse esquerdo -> inserir vertice (Ponto4D)
-    - [x] Finalizar - espaço
-    - [x]remover tecla D -> polignoAtual (propriedade), quando remover fica nulo
-- 5 clica na tela com mouse direito -> seleciona o vertice mais próximo e move
-	- clica na tecla v -> remover
-- 6 fazer o rastro -> sempre inserir dois ptos na matriz
-- 7 sempre inicia o poligno com primitiva line_loop
-	- clicar P tecla ai troca para line_strap
-- 8 troca a cor do poligno selecionado
-
-# Diagrama de Classes
-![Diagrama](assets/Diagrama.png)
-
-
-Deve-se ter um polígono,  apertar F e daí começa a desenha outro polígono sendo filho do polígono selecionado, ao apertar enter para o filho e tira a seleção do pai
-
-Ao selecionar um deve-se selecionar a BBox

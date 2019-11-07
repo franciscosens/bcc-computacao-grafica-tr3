@@ -91,9 +91,32 @@ namespace gcgcg
         }
 
         /// <summary>
-        /// Método para obter o último ponto do polígono
+        /// Método para obter o último ponto do polígono 
         /// </summary>
         public Ponto4D ObterUltimoPonto() => pontosLista[pontosLista.Count - 1];
+
+        public int PontoEmPoligono(Ponto4D pontoSelecao)
+        {
+            int numeroInterseccoes = 0;
+            for (int i = 0; i < pontosLista.Count; i++)
+            {
+
+                Ponto4D pontoAtual = pontosLista[i];
+                Ponto4D pontoProximo = i + 1 < pontosLista.Count ? pontosLista[i + 1] : pontosLista[i];
+
+                double ti = (pontoSelecao.Y - pontoAtual.Y) / (pontoProximo.Y - pontoAtual.Y);
+                if(ti >= 0 && ti <= 1)
+                {
+                    double xi = pontoAtual.X + ((pontoProximo.X - pontoAtual.X) * ti);
+                    if(xi >= pontoSelecao.X)
+                    {
+                        numeroInterseccoes++;
+                    }
+                }
+
+            }
+            return numeroInterseccoes;
+        }
 
         /// <summary>
         /// Método para remover o último ponto do polígono

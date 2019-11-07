@@ -76,7 +76,7 @@ namespace gcgcg
 
             if (e.Button == MouseButton.Right)
             {
-                MoverPonto();
+                MoverPonto(objetosLista);
             }
             else if (e.Button == MouseButton.Left)
             {
@@ -87,30 +87,59 @@ namespace gcgcg
         /// <summary>
         /// Método que permite mover o vértice selecionado.
         /// </summary>
-        private void MoverPonto()
+        private void MoverPonto(List<Objeto> objetosLista)
         {
-            Ponto4D pontoNovo = new Ponto4D(mouseX, mouseY, 0);
+            objetoSelecionado = null;
 
-            double maiorDistancia = double.MaxValue;
+            Ponto4D pontoNovo = new Ponto4D(mouseX, mouseY, 0);
             foreach (var objeto in objetosLista)
             {
                 var poligono = (ObjetoAramado)objeto;
-                foreach (var pontoAtual in poligono.ObterPontos())
+                int numeroInterseccoes = poligono.PontoEmPoligono(pontoNovo);
+                if (numeroInterseccoes % 2 != 0)
                 {
-                    double distancia = CalcularDistancia(pontoAtual, pontoNovo);
-                    if (distancia < maiorDistancia)
+                    objetoSelecionado = poligono;
+                    double maiorDistancia = double.MaxValue;
+                    foreach (var pontoAtual in poligono.ObterPontos())
                     {
-                        maiorDistancia = distancia;
-                        pontoSelecionado = pontoAtual;
-                        objetoSelecionado = poligono;
+                        double distancia = CalcularDistancia(pontoAtual, pontoNovo);
+                        if (distancia < maiorDistancia)
+                        {
+                            maiorDistancia = distancia;
+                            pontoSelecionado = pontoAtual;
+                        }
+                    }
+                    break;
+                }
+                else
+                {
+                    for (int i = 0; i < poligono.ObjetosLista().Count; i++)
+                    {
+                        MoverPonto(poligono.ObjetosLista());
                     }
                 }
+
             }
-            if(objetoSelecionado != null)
+            if (objetoSelecionado != null)
             {
                 bBoxDesenhar = true;
             }
         }
+
+        /// <summary>
+        /// Método que calcula a distância entre o vértice atual e o novo vértice.
+        /// </summary>
+        /// <param name="pontoAtual"></param>
+        /// <param name="pontoNovo"></param>
+        /// <returns> Retorna a distância entre os dois pontos.</returns>
+        private double CalcularDistancia(Ponto4D pontoAtual, Ponto4D pontoNovo)
+        {
+            double a = (pontoNovo.X - pontoAtual.X);
+            double b = (pontoNovo.Y - pontoAtual.Y);
+            double disctancia = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            return disctancia;
+        }
+
 
         /// <summary>
         /// Método que permite remover o vértice selecionado.
@@ -189,20 +218,6 @@ namespace gcgcg
                 }
                 objetoNovo.PontosAdicionar(new Ponto4D(mouseX, mouseY));
             }
-        }
-
-        /// <summary>
-        /// Método que calcula a distância entre o vértice atual e o novo vértice.
-        /// </summary>
-        /// <param name="pontoAtual"></param>
-        /// <param name="pontoNovo"></param>
-        /// <returns> Retorna a distância entre os dois pontos.</returns>
-        private double CalcularDistancia(Ponto4D pontoAtual, Ponto4D pontoNovo)
-        {
-            double a = (pontoNovo.X - pontoAtual.X);
-            double b = (pontoNovo.Y - pontoAtual.Y);
-            double disctancia = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
-            return disctancia;
         }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)

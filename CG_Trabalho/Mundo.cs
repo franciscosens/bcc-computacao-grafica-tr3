@@ -186,7 +186,7 @@ namespace gcgcg
         private void AdicionarPoligono()
         {
 
-            if (pontoSelecionado != null)
+            if (objetoSelecionado != null)
             {
                 if (adicionarFilhos == true)
                 {
